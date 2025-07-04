@@ -1,13 +1,23 @@
-prompts_database_translated.json
-prompts_database.json
+node_modules
 
-BlackMagic_Prompts
-Arsenal_Dev_AI_Raw
-HTML_Arsenal_Completo
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
 
-prompts_database_final.json
-prompts_database_structured.json
-translation_cache_structured.json
-video_content_cache.json
+# OS
+.DS_Store
+Thumbs.db
 
+# Env
 .env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
