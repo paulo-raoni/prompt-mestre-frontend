@@ -56,7 +56,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "arquitetura-de-codigo"
   },
   {
     "category": "Criação de Narrativas",
@@ -97,7 +98,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "criacao-de-narrativas"
   },
   {
     "category": "Engenharia de Prompt",
@@ -141,7 +143,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "engenharia-de-prompt"
   },
   {
     "category": "Design Visual",
@@ -183,7 +186,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "design-visual"
   },
   {
     "category": "Produtividade & Carreira",
@@ -225,7 +229,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "produtividade-carreira"
   },
   {
     "category": "Aprendizagem",
@@ -266,7 +271,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "aprendizagem"
   },
   {
     "category": "Marketing & Ads",
@@ -310,7 +316,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "marketing-ads"
   },
   {
     "category": "Outros",
@@ -356,7 +363,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "outros"
   },
   {
     "category": "Negócios & Estratégia",
@@ -398,7 +406,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "negocios-estrategia"
   },
   {
     "category": "SEO & Conteúdo",
@@ -443,7 +452,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "seo-conteudo"
   },
   {
     "category": "Redes Sociais",
@@ -495,7 +505,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "redes-sociais"
   },
   {
     "category": "Redes Sociais",
@@ -538,7 +549,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "redes-sociais"
   },
   {
     "category": "Poder & Liderança",
@@ -580,7 +592,8 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "poder-lideranca"
   },
   {
     "category": "Sociedade & Pesquisa",
@@ -623,6 +636,7 @@
         ],
         "thumbnail": ""
       }
-    ]
+    ],
+    "slug": "sociedade-pesquisa"
   }
 ]

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
     --bg-dark: #171c28;
     --surface: #1d2336;
@@ -22,6 +26,19 @@ body {
     color: var(--text);
     font-family: var(--font-main);
     min-height: 100vh;
+    animation: fadein 0.55s;
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 h1,
@@ -43,136 +60,12 @@ a:hover {
     text-decoration: underline;
 }
 
-.categorias-grid,
-.prompts-grid {
-    display: grid;
-    gap: var(--gap);
-    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-    margin: 0 auto;
-    padding: var(--gap);
-    max-width: 1400px;
-}
-
-.category-bloco,
-.prompt-bloco {
-    background: var(--surface);
-    border-radius: var(--card-radius);
-    box-shadow: var(--card-shadow);
-    padding: 28px 24px 22px 24px;
-    min-height: 155px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    cursor: pointer;
-    transition: background .2s, box-shadow .2s;
-    position: relative;
-    border: 1.5px solid var(--border-light);
-}
-
-.category-bloco:hover,
-.prompt-bloco:hover {
-    background: var(--surface-hover);
-    box-shadow: 0 8px 32px #0007;
-}
-
-.emoji {
-    font-size: 2.1rem;
-    margin-right: 14px;
-    vertical-align: middle;
-}
-
-.prompt-title,
-.category-title {
-    font-size: 1.16rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 5px;
-}
-
-.prompt-short {
-    color: var(--text-dim);
-    margin-bottom: 12px;
-    font-size: 1.03rem;
-    line-height: 1.5;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 99%;
-}
-
-.short {
-    font-size: 1.09rem;
-    color: var(--text-dim);
-    margin-bottom: 14px;
-}
-
-.long {
-    color: #fff;
-    line-height: 1.68;
-    font-size: 1.12rem;
-    margin-bottom: 20px;
-}
-
 ul {
-    margin: 18px 0 14px 26px;
-    padding: 0;
-    color: var(--accent);
-    font-size: 1.07rem;
+    padding-left: 20px;
 }
 
 li {
     margin-bottom: 8px;
-}
-
-button,
-.prompt-cta,
-.teaser-cta {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    border-radius: 9px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: 10px 24px;
-    margin-top: 16px;
-    margin-bottom: 6px;
-    cursor: pointer;
-    box-shadow: 0 1px 4px #0002;
-    transition: background .16s;
-}
-
-button:hover,
-.prompt-cta:hover,
-.teaser-cta:hover {
-    background: var(--primary-hover);
-}
-
-img {
-    max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 2px 14px #0004;
-    display: block;
-    margin-bottom: 14px;
-}
-
-
-
-body {
-    /* animação leve de fade in */
-    animation: fadein 0.55s;
-}
-
-@keyframes fadein {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: none;
-    }
 }
 
 ::-webkit-scrollbar {
@@ -185,19 +78,17 @@ body {
     border-radius: 6px;
 }
 
+/* Header global, botões globais, tema, etc */
 .pm-header {
-    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
-    background: var(--surface);
-    padding: 0 32px 0 22px;
-    height: 70px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 1.5px solid var(--border-light);
+    gap: 20px;
+    padding: 18px 0 14px 0;
+    position: relative;
+    z-index: 99;
+    width: 100%;
+    background: none;
 }
 
 .pm-header-left,
@@ -208,127 +99,147 @@ body {
 }
 
 .pm-logo {
-    font-size: 1.38rem;
-    font-weight: bold;
-    color: var(--accent);
-    letter-spacing: -1.5px;
-    user-select: none;
-}
-
-.pm-ai {
+    font-weight: 900;
+    font-size: 1.5rem;
     color: var(--primary);
-    font-weight: 700;
-}
-
-.pm-header-center {
-    flex: 1;
-    justify-content: center;
-    min-width: 230px;
-}
-
-.pm-search-form {
-    display: flex;
-    align-items: center;
-    background: var(--bg-dark);
-    border-radius: 999px;
-    border: 1.5px solid var(--border-light);
-    padding: 2px 12px 2px 18px;
-    width: 100%;
-    max-width: 360px;
-    box-shadow: 0 1px 7px #0002;
-}
-
-.pm-search-input {
-    border: none;
-    background: transparent;
-    color: #fff;
-    font-size: 1.08rem;
-    width: 100%;
-    outline: none;
-    padding: 7px 0;
-}
-
-.pm-search-btn {
-    border: none;
-    background: none;
-    font-size: 1.2rem;
-    color: var(--primary);
-    cursor: pointer;
-    margin-left: 8px;
-    outline: none;
-}
-
-.pm-header-right {
-    gap: 15px;
+    text-shadow: 0 2px 16px #1a54ee33;
+    letter-spacing: -0.01em;
 }
 
 .pm-theme-btn {
-    background: none;
+    font-size: 1.26rem;
     border: none;
-    cursor: pointer;
-    font-size: 1.3rem;
+    background: none;
     color: var(--accent);
-    position: relative;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.16s;
+    cursor: pointer;
+    border-radius: 9px;
+    padding: 5px 9px;
+    margin-right: 4px;
+    transition: background .18s;
 }
 
 .pm-theme-btn:hover {
-    background: #29314a;
+    background: #1c2533;
+    color: var(--primary-hover);
 }
 
 .pm-theme-tooltip {
-    opacity: 0;
+    background: #232941;
+    color: #dbeafe;
+    font-size: .89rem;
+    padding: 5px 8px;
+    border-radius: 8px;
     position: absolute;
-    top: 42px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface-hover);
-    color: #fff;
-    font-size: 0.89rem;
-    padding: 5px 12px;
-    border-radius: 6px;
-    pointer-events: none;
-    transition: opacity 0.13s;
-    white-space: nowrap;
+    top: 40px;
+    right: 0;
     z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .19s;
 }
 
-.pm-theme-btn:hover .pm-theme-tooltip {
+.pm-theme-btn:focus+.pm-theme-tooltip,
+.pm-theme-btn:hover+.pm-theme-tooltip {
     opacity: 1;
 }
 
 .pm-login-btn {
     background: var(--primary);
     color: #fff;
-    font-weight: 600;
     border: none;
     border-radius: 8px;
-    padding: 7px 24px;
-    font-size: 1.04rem;
-    opacity: 0.7;
-    cursor: not-allowed;
+    padding: 9px 17px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1.08rem;
+    margin-left: 16px;
+    transition: background .19s;
+    box-shadow: 0 2px 16px #0002;
 }
 
-/* Responsivo */
+.pm-login-btn:hover {
+    background: var(--primary-hover);
+}
+
+.pm-search-form {
+    width: 100%;
+    display: flex;
+    gap: 0;
+    align-items: center;
+    max-width: 650px;
+    margin: 0 auto 30px auto;
+    justify-content: center;
+}
+
+.pm-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1.13rem;
+    border-radius: 14px 0 0 14px;
+    border: 1.5px solid var(--border-light);
+    background: var(--surface);
+    color: #fff;
+    outline: none;
+    transition: border .18s;
+}
+
+.pm-search-btn {
+    padding: 12px 18px;
+    font-size: 1.23rem;
+    border: none;
+    border-radius: 0 14px 14px 0;
+    background: var(--primary);
+    color: #fff;
+    cursor: pointer;
+    transition: background .17s;
+}
+
+.pm-search-btn:hover {
+    background: var(--primary-hover);
+}
+
+/* Aurora efeito */
+.aurora {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.aurora-1 {
+    background-color: #3B82F6;
+    width: 40vw;
+    height: 40vw;
+    top: -10%;
+    right: -10%;
+}
+
+.aurora-2 {
+    background-color: #FBBF24;
+    width: 35vw;
+    height: 35vw;
+    top: 30%;
+    left: -10%;
+}
+
+.aurora-3 {
+    background-color: #2DD4BF;
+    width: 30vw;
+    height: 30vw;
+    bottom: 10%;
+    right: 20%;
+}
+
+/* Responsividade básica */
+@media (max-width: 800px) {
+    .pm-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
 @media (max-width: 700px) {
-
-    .categorias-grid,
-    .prompts-grid {
-        grid-template-columns: 1fr;
-        padding: 12px;
-        gap: 17px;
-    }
-
-    .category-bloco,
-    .prompt-bloco {
-        padding: 16px 12px;
-    }
 
     h1,
     h2 {
@@ -336,31 +247,8 @@ body {
     }
 }
 
-@media (max-width: 800px) {
-    .pm-header {
-        flex-direction: column;
-        height: auto;
-        padding: 9px 5vw;
-    }
-
-    .pm-header-center {
-        width: 100%;
-        margin: 6px 0;
-    }
-}
-
 @media (max-width: 500px) {
     .pm-header {
         flex-direction: column;
-        height: auto;
-        padding: 8px 0;
-    }
-
-    .pm-logo {
-        font-size: 1.05rem;
-    }
-
-    .pm-header-right .pm-login-btn {
-        display: none;
     }
 }
