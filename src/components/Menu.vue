@@ -1,7 +1,7 @@
 <template>
   <section class="container" style="padding-top: 44px;">
     <div class="header">
-      <h1>Arsenal Dev AI</h1>
+      <h1>Prompt Mestre AI</h1>
       <p>Seu arsenal completo de prompts de IA. Use a busca ou navegue pelas categorias.</p>
     </div>
 

@@ -1,0 +1,867 @@
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brazilian Dev AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .aurora {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+        
+        .aurora-1 {
+            background-color: #3B82F6;
+            width: 40vw;
+            height: 40vw;
+            top: -10%;
+            right: -10%;
+        }
+        
+        .aurora-2 {
+            background-color: #FBBF24;
+            width: 35vw;
+            height: 35vw;
+            top: 30%;
+            left: -10%;
+        }
+        
+        .aurora-3 {
+            background-color: #2DD4BF;
+            width: 30vw;
+            height: 30vw;
+            bottom: 10%;
+            right: 20%;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .btn {
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer.open {
+            max-height: 500px;
+        }
+        
+        .company-logo {
+            filter: grayscale(100%) brightness(1.5);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .company-logo:hover {
+            filter: grayscale(0%) brightness(1.2);
+            opacity: 1;
+        }
+        
+        /* Animação para o SVG da IA */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .node {
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .connection {
+            stroke-dasharray: 12;
+            stroke-dashoffset: 24;
+            animation: dash 3s infinite linear;
+        }
+        
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        .floating-element {
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        .floating-element-2 {
+            animation: float 8s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+        
+        .floating-element-3 {
+            animation: float 7s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+        
+        /* Modal de redirecionamento */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background-color: #1F2937;
+            border-radius: 1rem;
+            border: 1px solid #3B82F6;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.fixed{position:fixed}.inset-0{inset:0px}.mx-4{margin-left:1rem;margin-right:1rem}.mx-auto{margin-left:auto;margin-right:auto}.mb-10{margin-bottom:2.5rem}.mb-16{margin-bottom:4rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mr-1{margin-right:0.25rem}.mt-16{margin-top:4rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-4{height:1rem}.h-40{height:10rem}.h-48{height:12rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-8{height:2rem}.h-auto{height:auto}.h-full{height:100%}.w-16{width:4rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-4xl{max-width:56rem}.max-w-md{max-width:28rem}.rotate-180{--tw-rotate:180deg;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-4{gap:1rem}.gap-8{gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-8 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(2rem * var(--tw-space-x-reverse));margin-left:calc(2rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-2xl{border-radius:1rem}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-blue-500\/50{border-color:rgb(59 130 246 / 0.5)}.border-gray-800{--tw-border-opacity:1;border-color:rgb(31 41 55 / var(--tw-border-opacity, 1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.bg-gray-700{--tw-bg-opacity:1;background-color:rgb(55 65 81 / var(--tw-bg-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.bg-gray-900\/50{background-color:rgb(17 24 39 / 0.5)}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pt-8{padding-top:2rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-yellow-400{--tw-text-opacity:1;color:rgb(250 204 21 / var(--tw-text-opacity, 1))}.line-through{-webkit-text-decoration-line:line-through;text-decoration-line:line-through}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-blue-600:hover{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-600:hover{--tw-bg-opacity:1;background-color:rgb(75 85 99 / var(--tw-bg-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 640px){.sm\:flex-row{flex-direction:row}}@media (min-width: 768px){.md\:mb-0{margin-bottom:0px}.md\:flex{display:flex}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:p-12{padding:3rem}.md\:text-6xl{font-size:3.75rem;line-height:1}}</style><style>.keyword-info-container{box-sizing:border-box;width:92%;margin-bottom:20px;font-size:12px;border-bottom:1px solid #dee1e5;border:1px solid #f1f3f4;margin:14px 16px;border-radius:2px;padding:20px;position:relative;-webkit-font-smoothing:antialiased}body[data-dt="1"] .keyword-info-container,html[dark] .keyword-info-container{border-color:#3d4042}.keyword-info-container .title{color:#26282d;font-size:16px;font-weight:bold}.keyword-info-container .tabs{list-style:none;display:flex;justify-content:flex-start;border-bottom:1px solid #dee1e5;margin-top:-10px;padding:0px 16px;align-items:center}.keyword-info-container .tabs.tip{border-color:#f8b199 !important;border-radius:2px;border:1px solid}.keyword-info-container .tabs li{padding:8px;padding-left:0;color:#000;cursor:pointer;font-size:12px}.keyword-info-container .tabs li.small{font-size:10px}.keyword-info-container .tabs li:last-child{overflow:hidden}.keyword-info-container .tabs li.active{color:#4285f4;margin:20px 0}table.keyword-info-table{border-collapse:collapse;width:100%;color:#000;font-size:12px;position:relative}.keyword-info-table thead{height:50px}.keyword-info-table th{padding:10px;padding-left:0;font-weight:bold;color:#000;font-size:12px}.keyword-info-table th:first-child{padding-left:16px}.keyword-info-table th:last-child{padding-right:0px}.keyword-info-table td{border-bottom:1px solid #f1f3f4;padding:10px;padding-left:0;height:50px;box-sizing:border-box}.keyword-info-table tr{border-bottom:1px solid #f1f3f4}body[data-dt="1"] .keyword-info-table td,html[dark] .keyword-info-table td{border-color:#3d4042}body[data-dt="1"] .keyword-info-table tr,html[dark] .keyword-info-table tr{border-color:#3d4042}body[data-dt="1"] .keyword-info-table tfoot tr,body[data-dt="1"] .keyword-info-table tfoot td,html[dark] .keyword-info-table tfoot tr,html[dark] .keyword-info-table tfoot td{border:none}.keyword-info-table td:first-child{padding-left:16px}.keyword-info-table td:last-child{padding-right:0px}.keyword-info-table tfoot tr,.keyword-info-table tfoot td{border:none}.ubersuggest-button{color:#0086f7;font-family:Figtree;font-size:14px;font-weight:bold;line-height:29px;padding:8px 30px;border:1px solid #0086f7;background-color:#fff;border-radius:2px;outline:none;border:none;cursor:pointer;margin:4px}.ubersuggest-logo-wrapper{display:flex;align-items:center;justify-content:flex-end;margin:10px 10px 0 0;font-weight:bold;color:#26282d}.ubersuggest-logo{width:182px;height:33px;cursor:pointer}.keyword-info-container .row{display:flex;justify-content:space-between;align-items:center;margin:0;padding:20px 16px}.header h2{color:#000;font-family:Figtree;font-size:24px;font-weight:500}html[dark] .keyword-info-container .title{color:#fff}html[dark] table.keyword-info-table{color:#fff}html[dark] .keyword-info-table th{color:#fff}html[dark] .keyword-info-table tfoot tr:last-child td .button-arrow{border-color:#fff}body[data-dt="1"] .keyword-info-container .title{color:#fff}body[data-dt="1"] .keyword-info-container .tabs{border-color:rgba(255,255,255,.0509803922)}body[data-dt="1"] table.keyword-info-table{color:#fff}body[data-dt="1"] .keyword-info-table th{color:#fff}</style><style>.tippy-box[data-theme~=tip-dark] .tippy-content,.tippy-box[data-theme~=tip-light] .tippy-content{padding:0}.tippy-box[data-theme~=tip-dark]>.tippy-backdrop{background-color:#fff}.tippy-box[data-theme~=tip-dark]>.tippy-arrow:after{border-color:#fff;border-style:solid}.tippy-box[data-theme~=tip-dark][data-placement^=top]>.tippy-arrow:before{border-top-color:#fff}.tippy-box[data-theme~=tip-dark][data-placement^=top]>.tippy-arrow:after{border-top-color:#fff}.tippy-box[data-theme~=tip-dark][data-placement^=bottom]>.tippy-arrow:before{border-bottom-color:#fff;bottom:16px}.tippy-box[data-theme~=tip-dark][data-placement^=bottom]>.tippy-arrow:after{border-bottom-color:#fff}.tippy-box[data-theme~=tip-dark][data-placement^=left]>.tippy-arrow:before{border-left-color:#fff}.tippy-box[data-theme~=tip-dark][data-placement^=left]>.tippy-arrow:after{border-left-color:#fff}.tippy-box[data-theme~=tip-dark][data-placement^=right]>.tippy-arrow:before{border-right-color:#fff}.tippy-box[data-theme~=tip-dark][data-placement^=right]>.tippy-arrow:after{border-right-color:#fff}.tippy-box[data-theme~=tip-dark]>.tippy-svg-arrow{fill:#fff}.tippy-box[data-theme~=tip-light]>.tippy-backdrop{background-color:#202020}.tippy-box[data-theme~=tip-light]>.tippy-arrow:after{border-color:#202020;border-style:solid}.tippy-box[data-theme~=tip-light][data-placement^=top]>.tippy-arrow:before{border-top-color:#202020}.tippy-box[data-theme~=tip-light][data-placement^=top]>.tippy-arrow:after{border-top-color:#202020}.tippy-box[data-theme~=tip-light][data-placement^=bottom]>.tippy-arrow:before{border-bottom-color:#202020;bottom:16px}.tippy-box[data-theme~=tip-light][data-placement^=bottom]>.tippy-arrow:after{border-bottom-color:#202020}.tippy-box[data-theme~=tip-light][data-placement^=left]>.tippy-arrow:before{border-left-color:#202020}.tippy-box[data-theme~=tip-light][data-placement^=left]>.tippy-arrow:after{border-left-color:#202020}.tippy-box[data-theme~=tip-light][data-placement^=right]>.tippy-arrow:before{border-right-color:#202020}.tippy-box[data-theme~=tip-light][data-placement^=right]>.tippy-arrow:after{border-right-color:#202020}.tippy-box[data-theme~=tip-light]>.tippy-svg-arrow{fill:#202020}</style><style>.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(0.54, 1.5, 0.38, 1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:rgba(0,0,0,0);border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}</style><style>.tippy-box[data-theme~=light]{color:#26323d;box-shadow:0 0 20px 4px rgba(154,161,177,.15),0 4px 80px -8px rgba(36,40,47,.25),0 4px 4px -2px rgba(91,94,105,.15);background-color:#fff}.tippy-box[data-theme~=light][data-placement^=top]>.tippy-arrow:before{border-top-color:#fff}.tippy-box[data-theme~=light][data-placement^=bottom]>.tippy-arrow:before{border-bottom-color:#fff}.tippy-box[data-theme~=light][data-placement^=left]>.tippy-arrow:before{border-left-color:#fff}.tippy-box[data-theme~=light][data-placement^=right]>.tippy-arrow:before{border-right-color:#fff}.tippy-box[data-theme~=light]>.tippy-backdrop{background-color:#fff}.tippy-box[data-theme~=light]>.tippy-svg-arrow{fill:#fff}</style><style id="_goober"> @keyframes go2264125279{from{transform:scale(0) rotate(45deg);opacity:0;}to{transform:scale(1) rotate(45deg);opacity:1;}}@keyframes go3020080000{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}@keyframes go463499852{from{transform:scale(0) rotate(90deg);opacity:0;}to{transform:scale(1) rotate(90deg);opacity:1;}}@keyframes go1268368563{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}@keyframes go1310225428{from{transform:scale(0) rotate(45deg);opacity:0;}to{transform:scale(1) rotate(45deg);opacity:1;}}@keyframes go651618207{0%{height:0;width:0;opacity:0;}40%{height:0;width:6px;opacity:1;}100%{opacity:1;height:10px;}}@keyframes go901347462{from{transform:scale(0.6);opacity:0.4;}to{transform:scale(1);opacity:1;}}.go4109123758{z-index:9999;}.go4109123758 > *{pointer-events:auto;}</style><style>.ubersuggest-header-container{box-sizing:border-box;width:100%;font-size:12px;-webkit-font-smoothing:antialiased}@keyframes slideInFromLeft{from{transform:translateX(100%);opacity:0}to{transform:translateX(-4%);opacity:1}}.ubersuggest-header-container .toast-container{animation:slideInFromLeft .5s ease forwards}.ubersuggest-header-container .row{margin:0;padding:15px 16px 15px 16px;display:flex;justify-content:space-between;align-items:center;min-height:30px}.ubersuggest-header-container .row>div{display:flex;flex-wrap:wrap;gap:8px}.ubersuggest-header-container .row>div:first-child>div{flex-wrap:wrap;align-content:space-around}.ue-enable{display:block}.ue-disable,.ue-enable.hide-settings{display:none !important}.ue-disable.hide-settings{display:flex !important}.ubersuggest-header-container .settings{display:flex;align-items:center}.ubersuggest-header-container .settings-label{margin-right:21px}.ubersuggest-header-container .settings-icon{width:21px;height:21px;margin-right:7px}</style><style>.rr--group{display:flex;width:100%;position:relative}.rr--box{display:flex;width:100%;flex-grow:1;-webkit-tap-highlight-color:rgba(0,0,0,0)}.rr--svg{display:flex;aspect-ratio:1;width:100%;flex-grow:1;overflow:clip;pointer-events:none}@supports not (overflow: clip){.rr--svg{overflow:auto}}.rr--box:focus,.rr--box:focus-visible,.rr-reset:focus-visible,.rr-reset:focus{outline:none;box-shadow:none}.rr--focus-reset{outline:6px double #0079ff}.rr--box:focus-visible .rr--svg{outline:6px double #0079ff;isolation:isolate}.rr--reset{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0;right:0;bottom:50%}[dir=rtl] .rr--reset{left:0;right:auto}.rr--dir-y .rr--reset{bottom:0;right:50%}.rr--disabled{opacity:.5;cursor:not-allowed}.rr--disabled .rr--svg{pointer-events:none}.rr--pointer .rr--box{cursor:pointer}.rr--dir-x{flex-direction:row}.rr--dir-y{flex-direction:column}.rr--space-sm .rr--svg{padding:8%}.rr--space-md .rr--svg{padding:12.5%}.rr--space-lg .rr--svg{padding:17.5%}.rr--dir-x.rr--gap-sm .rr--svg{margin:0 6.25%}.rr--dir-x.rr--gap-sm .rr--box:focus-visible:after{width:87.5%;left:6.25%}.rr--dir-x.rr--gap-md .rr--svg{margin:0 12.5%}.rr--dir-x.rr--gap-md .rr--box:focus-visible:after{width:75%;left:12.5%}.rr--dir-x.rr--gap-lg .rr--svg{margin:0 25%}.rr--dir-x.rr--gap-lg .rr--box:focus-visible:after{width:50%;left:25%}.rr--dir-y.rr--gap-sm .rr--svg{margin:6.25% 0}.rr--dir-y.rr--gap-md .rr--svg{margin:12.5% 0}.rr--dir-y.rr--gap-lg .rr--svg{margin:25% 0}.rr--rx-sm .rr--svg{border-radius:5%}.rr--rx-md .rr--svg{border-radius:15%}.rr--rx-lg .rr--svg{border-radius:20%}.rr--rx-full .rr--svg{border-radius:100%}.rr--has-stroke .rr--svg{stroke-linecap:round;stroke-linejoin:round}.rr--has-border .rr--svg{border-width:var(--rr--border-width);border-style:solid}.rr--on .rr--svg{fill:var(--rr--fill-on-color, none)}.rr--off .rr--svg{fill:var(--rr--fill-off-color, none)}.rr--has-stroke .rr--on .rr--svg{stroke:var(--rr--stroke-on-color, currentColor)}.rr--has-stroke .rr--off .rr--svg{stroke:var(--rr--stroke-off-color, currentColor)}.rr--on .rr--svg{background-color:var(--rr--box-on-color, none)}.rr--off .rr--svg{background-color:var(--rr--box-off-color, none)}.rr--has-border .rr--off .rr--svg{border-color:var(--rr--border-off-color, currentColor)}.rr--has-border .rr--on .rr--svg{border-color:var(--rr--border-on-color, currentColor)}.rr--fx-colors{--rr--easing: .2s cubic-bezier(.61, 1, .88, 1)}.rr--fx-colors .rr--svg{transition-duration:.2s;transition-timing-function:var(--rr--easing);transition-property:background-color,border-color,fill,stroke}.rr--fx-opacity .rr--off{opacity:.35;transition:opacity var(--rr--easing)}.rr--fx-opacity .rr--on{opacity:1}@media(hover: hover){.rr--fx-opacity .rr--box:hover{opacity:1}}@media(hover: hover){.rr--fx-zoom .rr--box{transition:transform var(--rr--easing);transform:scale(1)}.rr--fx-zoom .rr--box:hover{transform:scale(1.2)}}@media(hover: hover)and (prefers-reduced-motion){.rr--fx-zoom .rr--box:hover{transform:scale(1)}}@media(hover: hover){.rr--fx-position .rr--box{transition:transform var(--rr--easing);transform:translateY(0)}.rr--fx-position .rr--box:hover{transform:translateY(-15%)}}@media(hover: hover)and (prefers-reduced-motion){.rr--fx-position .rr--box:hover{transform:translateY(0)}}.rr--svg-stop-1{stop-color:var(--rr--fill-on-color, rgba(0, 0, 0, 0))}[dir=rtl] .rr--svg-stop-1,.rr--svg-stop-2{stop-color:var(--rr--fill-off-color, rgba(0, 0, 0, 0))}[dir=rtl] .rr--svg-stop-2{stop-color:var(--rr--fill-on-color, rgba(0, 0, 0, 0))}.rr--hf-svg-on{fill:var(--rr--fill-on-color, none)}.rr--hf-svg-off{fill:var(--rr--fill-off-color, none)}.rr--has-stroke .rr--hf-svg-on{stroke:var(--rr--stroke-on-color, currentColor)}.rr--has-stroke .rr--hf-svg-off{stroke:var(--rr--stroke-off-color, currentColor)}.rr--hf-svg-on .rr--svg,.rr--hf-svg-off .rr--svg{background-color:var(--rr--box-off-color, none)}.rr--has-border .rr--hf-svg-on .rr--svg{border-color:var(--rr--border-on-color, currentColor)}.rr--has-border .rr--hf-svg-off .rr--svg{border-color:var(--rr--border-off-color, currentColor)}.rr--dir-x .rr--hf-box-int .rr--svg{background:linear-gradient(to right, var(--rr--box-on-color, none) 50%, var(--rr--box-off-color, none) 50%)}[dir=rtl] .rr--dir-x .rr--hf-box-int .rr--svg{background:linear-gradient(to left, var(--rr--box-on-color, none) 50%, var(--rr--box-off-color, none) 50%)}.rr--dir-y .rr--hf-box-int .rr--svg{background:linear-gradient(to bottom, var(--rr--box-on-color, none) 50%, var(--rr--box-off-color, none) 50%)}.rr--hf-box-on .rr--svg{background-color:var(--rr--box-on-color, none)}.rr--hf-box-off .rr--svg{background-color:var(--rr--box-off-color, none)}.rr--hf-box-on .rr--svg,.rr--hf-box-off .rr--svg,.rr--hf-box-int .rr--svg{fill:var(--rr--fill-off-color, none)}.rr--has-stroke .rr--hf-box-on .rr--svg,.rr--has-stroke .rr--hf-box-off .rr--svg,.rr--has-stroke .rr--hf-box-int .rr--svg{stroke:var(--rr--stroke-off-color, currentColor)}.rr--has-border .rr--hf-box-on .rr--svg,.rr--has-border .rr--hf-box-int .rr--svg{border-color:var(--rr--border-on-color, currentColor)}.rr--has-border .rr--hf-box-off .rr--svg{border-color:var(--rr--border-off-color, currentColor)}</style><style>.keyword-info-section{color:#26282d;font-family:Figtree;font-size:12px;height:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased}.keyword-info-section img{max-width:none}.keyword-info-section>li{font-weight:600;position:relative;display:flex;align-items:center;gap:6px}.keyword-info-section>li:first-child::after{content:"";width:6px;height:6px;background-color:#e8ebec;border-radius:50%;margin:0px 10px 0px 4px}body[data-dt="1"] .keyword-info-section>li:first-child::after{background-color:#636363}.keyword-info-section.hidden{display:none}.keyword-info-section.google{background-color:rgba(0,0,0,0)}.keyword-info-section.youtube{margin-right:15px;padding:0 0 0 10px;height:100%;background-color:#fff}.keyword-info-section.amazon{padding:13px 0;background-color:#fff}</style><style>.kw-overview-container{box-sizing:border-box;width:673px;padding:0;margin:0;margin-top:14px;font-size:12px;font-family:Figtree;-webkit-font-smoothing:antialiased}.kw-overview-container.youtube{box-sizing:border-box;width:645px;padding:0;margin:0;font-size:12px}</style><style>.bl-info-container{box-sizing:border-box;width:100%;padding:0;margin:0;font-size:12px;font-family:"Figtree";-webkit-font-smoothing:antialiased}.bl-info-header{display:flex;min-height:24px;width:100%;padding:0;justify-content:space-between;box-sizing:border-box;margin-bottom:5px}.bl-info-header .row{display:flex;margin:0;width:100%;justify-content:space-between}.bl-info-header .row.youtube{justify-content:flex-start}.bl-info-content,.kw-info-content{width:97%;display:flex;flex-direction:column;border:1px solid #dee1e5;border-radius:4px;padding-block:16px 10px;justify-items:center;align-items:center;margin-bottom:16px;position:relative}body[data-dt="1"] .kw-info-content,body[data-dt="1"] .bl-info-content{background:rgba(0,0,0,0);border-color:#292929}.bl-info-content img.loading{width:50px;margin:0 auto;margin-bottom:10px}.kw-info-content img.loading{width:50px;margin:0 auto;margin-top:10px;margin-bottom:10px}table.bl-info-table,table.kw-info-table{border-collapse:collapse;width:calc(100% - 32px);color:#808185;font-size:12px}body[data-dt="1"] table.bl-info-table,body[data-dt="1"] table.kw-info-table{color:#fff}.bl-info-table thead,.kw-info-table thead{height:50px;background:#f6f7f7}body[data-dt="1"] table.bl-info-table thead,body[data-dt="1"] table.kw-info-table thead{background:#36373a}.bl-info-table tr,.kw-info-table tr{width:100%;max-width:600px}.bl-info-table th,.kw-info-table th{padding:10px;padding-left:0;font-weight:600;color:#000;font-size:12px;border-bottom:1px solid #f6f7f7}body[data-dt="1"] .bl-info-table th,body[data-dt="1"] .kw-info-table th{color:#fff;border-color:#3d4043}.bl-info-table th:first-child,.kw-info-table th:first-child{padding-left:16px}.bl-info-table th:last-child,.kw-info-table th:last-child{border-right:none;padding-right:16px}.bl-info-table td,.kw-info-table td{border-bottom:1px solid #dee1e5;padding:10px;padding-left:0;max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#000}body[data-dt="1"] .bl-info-table td,body[data-dt="1"] .kw-info-table td{color:#fff;border-color:#3d4043}.bl-info-table td:first-child,.kw-info-table td:first-child{border-left:none;padding-left:16px}.bl-info-table tfoot td:first-child,.kw-info-table tfoot td:first-child{padding-left:0;padding-top:12px}.bl-info-table tfoot td:last-child,.kw-info-table tfoot td:last-child{padding-right:0;padding-top:12px}.bl-info-table td:last-child,.kw-info-table td:last-child{border-right:none;padding-right:16px}.bl-info-table tfoot tr:last-child td,.kw-info-table tfoot tr:last-child td{border-bottom:none}.bl-info-container .row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}.bl-info-container .row.start{justify-content:flex-start;gap:10px}.bl-info-container .row.start.tip{border:1px solid #f8b199;border-radius:2px;width:fit-content;padding-right:10px}</style><style>.statistics-graph-container{box-sizing:border-box;width:92%;font-size:12px;border-bottom:1px solid #dee1e5;border:1px solid #f1f3f4;margin:24px 16px;border-radius:2px;padding:20px;padding-bottom:10px;position:relative;-webkit-font-smoothing:antialiased}body[data-dt="1"] .statistics-graph-container{border-color:#3d4042}.statistics-graph-container.tip{border:1px solid #f8b199;border-radius:2px}.statistics-graph-container .row{display:flex;justify-content:space-between;align-items:center;margin:0 0 20px 0}.statistics-graph-container .row.closed{margin-bottom:10px}.statistics-graph-container .row .title{color:#26282d;font-size:16px;font-weight:bold}body[data-dt="1"] .statistics-graph-container .row .title{color:#fff}body[data-dt="1"] .statistics-graph-container .tabs{border-bottom:1px solid #dee1e5}body[data-dt="1"] .statistics-graph-container .tabs li{color:#fff}body[data-dt="1"] .statistics-graph-container .tabs li.active{color:#fff;border-bottom:3px solid #fff}</style></head>
+<body style="overflow: auto;">
+    <!-- Aurora Effects -->
+    <div class="aurora aurora-1"></div>
+    <div class="aurora aurora-2"></div>
+    <div class="aurora aurora-3"></div>
+    
+    <!-- Navigation -->
+    <nav class="container mx-auto px-6 py-6">
+        <div class="flex items-center justify-between">
+            <div class="text-xl font-bold">Brazilian Dev AI</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#features" class="text-gray-300 hover:text-white transition">Recursos</a>
+                <a href="#" class="text-gray-300 hover:text-white transition">Garimpo AI</a>
+                <a href="#faq-arsenal" class="text-gray-300 hover:text-white transition">Perguntas</a>
+            </div>
+            <!-- Botão de login removido -->
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="container mx-auto px-6 py-20 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">A Caixa de Ferramentas de IA para quem Constrói o Futuro Digital</h1>
+        <p class="text-gray-300 text-xl max-w-3xl mx-auto mb-10">
+            Acesse centenas de prompts de elite para Desenvolvedores, Marketeiros e Criadores de Conteúdo. Automatize tarefas, gere conteúdo de alta conversão e otimize suas estratégias.
+        </p>
+        <div class="flex flex-col md:flex-row justify-center gap-4">
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-medium text-lg btn" onclick="showRedirectModal()">
+                Garantir Acesso Vitalício
+            </button>
+        </div>
+        
+        <!-- Custom SVG Animation instead of placeholder -->
+        <div class="mt-16 mx-auto max-w-3xl">
+            <div class="bg-gray-900 rounded-xl shadow-2xl p-6">
+                <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                    <!-- Background Grid -->
+                    <defs>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="1"></path>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)"></rect>
+                    
+                    <!-- Central Brain/AI Hub -->
+                    <circle cx="400" cy="200" r="60" fill="#1E40AF" opacity="0.7" class="floating-element"></circle>
+                    <circle cx="400" cy="200" r="45" fill="#2563EB" opacity="0.8"></circle>
+                    
+                    <!-- Nodes -->
+                    <circle cx="250" cy="120" r="20" fill="#3B82F6" class="node floating-element-2"></circle>
+                    <circle cx="550" cy="120" r="20" fill="#3B82F6" class="node floating-element-3"></circle>
+                    <circle cx="200" cy="250" r="20" fill="#3B82F6" class="node floating-element"></circle>
+                    <circle cx="600" cy="250" r="20" fill="#3B82F6" class="node floating-element-2"></circle>
+                    <circle cx="300" cy="350" r="20" fill="#3B82F6" class="node floating-element-3"></circle>
+                    <circle cx="500" cy="350" r="20" fill="#3B82F6" class="node floating-element"></circle>
+                    
+                    <!-- Connections -->
+                    <line x1="400" y1="200" x2="250" y2="120" stroke="#60A5FA" stroke-width="2" class="connection"></line>
+                    <line x1="400" y1="200" x2="550" y2="120" stroke="#60A5FA" stroke-width="2" class="connection"></line>
+                    <line x1="400" y1="200" x2="200" y2="250" stroke="#60A5FA" stroke-width="2" class="connection"></line>
+                    <line x1="400" y1="200" x2="600" y2="250" stroke="#60A5FA" stroke-width="2" class="connection"></line>
+                    <line x1="400" y1="200" x2="300" y2="350" stroke="#60A5FA" stroke-width="2" class="connection"></line>
+                    <line x1="400" y1="200" x2="500" y2="350" stroke="#60A5FA" stroke-width="2" class="connection"></line>
+                    
+                    <!-- Code Symbols -->
+                    <text x="245" y="125" fill="white" font-family="monospace" font-size="16" text-anchor="middle">{}</text>
+                    <text x="545" y="125" fill="white" font-family="monospace" font-size="16" text-anchor="middle">[]</text>
+                    <text x="195" y="255" fill="white" font-family="monospace" font-size="16" text-anchor="middle">()</text>
+                    <text x="595" y="255" fill="white" font-family="monospace" font-size="16" text-anchor="middle">&lt;&gt;</text>
+                    <text x="295" y="355" fill="white" font-family="monospace" font-size="16" text-anchor="middle">/*</text>
+                    <text x="495" y="355" fill="white" font-family="monospace" font-size="16" text-anchor="middle">*/</text>
+                    
+                    <!-- Central AI Text -->
+                    <text x="400" y="205" fill="white" font-family="Inter, sans-serif" font-size="18" font-weight="bold" text-anchor="middle">AI</text>
+                    
+                    <!-- Floating Data Elements -->
+                    <g class="floating-element">
+                        <rect x="320" y="100" width="40" height="20" rx="5" fill="#2DD4BF" opacity="0.7"></rect>
+                        <rect x="330" y="110" width="40" height="20" rx="5" fill="#2DD4BF" opacity="0.5"></rect>
+                        <rect x="340" y="120" width="40" height="20" rx="5" fill="#2DD4BF" opacity="0.3"></rect>
+                    </g>
+                    
+                    <g class="floating-element-2">
+                        <rect x="440" y="100" width="40" height="20" rx="5" fill="#FBBF24" opacity="0.7"></rect>
+                        <rect x="450" y="110" width="40" height="20" rx="5" fill="#FBBF24" opacity="0.5"></rect>
+                        <rect x="460" y="120" width="40" height="20" rx="5" fill="#FBBF24" opacity="0.3"></rect>
+                    </g>
+                    
+                    <g class="floating-element-3">
+                        <circle cx="400" cy="300" r="15" fill="#EC4899" opacity="0.7"></circle>
+                        <circle cx="420" cy="310" r="10" fill="#EC4899" opacity="0.5"></circle>
+                        <circle cx="435" cy="315" r="5" fill="#EC4899" opacity="0.3"></circle>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Value Metrics Section (Replaced) -->
+    <section class="container mx-auto px-6 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div class="flex flex-col items-center">
+                <svg class="h-8 w-8 mb-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                <p class="text-4xl font-bold mb-2">99</p>
+                <p class="text-gray-400">Prompts de Elite Testados</p>
+            </div>
+            <div class="flex flex-col items-center">
+                 <svg class="h-8 w-8 mb-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <p class="text-4xl font-bold mb-2">12+</p>
+                <p class="text-gray-400">Categorias Profissionais</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <svg class="h-8 w-8 mb-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <p class="text-4xl font-bold mb-2">100%</p>
+                <p class="text-gray-400">Acesso Vitalício e Atualizações</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section id="features" class="container mx-auto px-6 py-20">
+        <h2 class="text-4xl font-bold text-center mb-16">Um Arsenal Completo para Cada Desafio</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-gray-800 rounded-xl p-8 hover:shadow-lg transition">
+                <div class="text-blue-500 mb-4 h-40 flex items-center justify-center">
+                    <!-- SVG para Marketing & Vendas -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" class="w-full h-full">
+                        <rect width="200" height="150" fill="#1F2937" rx="10"></rect>
+                        <!-- Gráfico de crescimento -->
+                        <polyline points="20,120 50,80 80,90 110,60 140,40 170,30" stroke="#3B82F6" stroke-width="3" fill="none"></polyline>
+                        <circle cx="20" cy="120" r="4" fill="#3B82F6"></circle>
+                        <circle cx="50" cy="80" r="4" fill="#3B82F6"></circle>
+                        <circle cx="80" cy="90" r="4" fill="#3B82F6"></circle>
+                        <circle cx="110" cy="60" r="4" fill="#3B82F6"></circle>
+                        <circle cx="140" cy="40" r="4" fill="#3B82F6"></circle>
+                        <circle cx="170" cy="30" r="4" fill="#3B82F6"></circle>
+                        
+                        <!-- Ícones de marketing -->
+                        <circle cx="50" cy="40" r="15" fill="#2563EB" opacity="0.7"></circle>
+                        <text x="50" y="45" font-family="Arial" font-size="14" fill="white" text-anchor="middle">$</text>
+                        
+                        <circle cx="90" cy="40" r="15" fill="#2563EB" opacity="0.7"></circle>
+                        <text x="90" y="45" font-family="Arial" font-size="14" fill="white" text-anchor="middle">@</text>
+                        
+                        <circle cx="130" cy="40" r="15" fill="#2563EB" opacity="0.7"></circle>
+                        <text x="130" y="45" font-family="Arial" font-size="14" fill="white" text-anchor="middle">%</text>
+                        
+                        <!-- Texto de anúncio -->
+                        <rect x="40" y="110" width="120" height="25" rx="5" fill="#3B82F6" opacity="0.3"></rect>
+                        <text x="100" y="127" font-family="Arial" font-size="10" fill="white" text-anchor="middle">ANÚNCIO OTIMIZADO</text>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Marketing &amp; Vendas</h3>
+                <p class="text-gray-300">
+                    Gere copys para Facebook Ads, títulos para Google Ads e sequências de e-mail que convertem, tudo com base em modelos de alta performance.
+                </p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="bg-gray-800 rounded-xl p-8 hover:shadow-lg transition">
+                <div class="text-blue-500 mb-4 h-40 flex items-center justify-center">
+                    <!-- SVG para Conteúdo & SEO -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" class="w-full h-full">
+                        <rect width="200" height="150" fill="#1F2937" rx="10"></rect>
+                        
+                        <!-- Documento de blog -->
+                        <rect x="30" y="20" width="140" height="110" rx="5" fill="#374151"></rect>
+                        <rect x="40" y="30" width="120" height="10" rx="2" fill="#60A5FA"></rect>
+                        <rect x="40" y="45" width="80" height="5" rx="2" fill="#9CA3AF"></rect>
+                        <rect x="40" y="55" width="90" height="5" rx="2" fill="#9CA3AF"></rect>
+                        
+                        <!-- Linhas de texto -->
+                        <rect x="40" y="70" width="120" height="3" rx="1" fill="#6B7280"></rect>
+                        <rect x="40" y="78" width="110" height="3" rx="1" fill="#6B7280"></rect>
+                        <rect x="40" y="86" width="115" height="3" rx="1" fill="#6B7280"></rect>
+                        <rect x="40" y="94" width="90" height="3" rx="1" fill="#6B7280"></rect>
+                        <rect x="40" y="102" width="100" height="3" rx="1" fill="#6B7280"></rect>
+                        
+                        <!-- Ícones de SEO -->
+                        <circle cx="160" cy="85" r="15" fill="#2563EB" opacity="0.7"></circle>
+                        <text x="160" y="90" font-family="Arial" font-size="14" fill="white" text-anchor="middle">#1</text>
+                        
+                        <!-- Lupa de pesquisa -->
+                        <circle cx="160" cy="120" r="10" stroke="#60A5FA" stroke-width="2" fill="none"></circle>
+                        <line x1="167" y1="127" x2="175" y2="135" stroke="#60A5FA" stroke-width="2"></line>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Conteúdo &amp; SEO</h3>
+                <p class="text-gray-300">
+                    Transforme vídeos do YouTube em posts de blog otimizados, gere roteiros virais para TikTok e pesquise palavras-chave de baixa concorrência para dominar o Google.
+                </p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="bg-gray-800 rounded-xl p-8 hover:shadow-lg transition">
+                <div class="text-blue-500 mb-4 h-40 flex items-center justify-center">
+                    <!-- SVG para Negócios & E-commerce -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" class="w-full h-full">
+                        <rect width="200" height="150" fill="#1F2937" rx="10"></rect>
+                        
+                        <!-- Loja online -->
+                        <rect x="25" y="20" width="150" height="90" rx="5" fill="#374151"></rect>
+                        
+                        <!-- Produtos -->
+                        <rect x="35" y="35" width="40" height="40" rx="3" fill="#4B5563"></rect>
+                        <rect x="35" y="80" width="40" height="10" rx="2" fill="#60A5FA"></rect>
+                        <rect x="35" y="95" width="20" height="8" rx="2" fill="#34D399"></rect>
+                        
+                        <rect x="85" y="35" width="40" height="40" rx="3" fill="#4B5563"></rect>
+                        <rect x="85" y="80" width="40" height="10" rx="2" fill="#60A5FA"></rect>
+                        <rect x="85" y="95" width="20" height="8" rx="2" fill="#34D399"></rect>
+                        
+                        <rect x="135" y="35" width="40" height="40" rx="3" fill="#4B5563"></rect>
+                        <rect x="135" y="80" width="40" height="10" rx="2" fill="#60A5FA"></rect>
+                        <rect x="135" y="95" width="20" height="8" rx="2" fill="#34D399"></rect>
+                        
+                        <!-- Carrinho de compras -->
+                        <circle cx="160" cy="20" r="10" fill="#3B82F6" opacity="0.7"></circle>
+                        <path d="M155,20 L157,15 L163,15 L165,20" stroke="white" stroke-width="1" fill="none"></path>
+                        <rect x="155" y="20" width="10" height="7" rx="1" stroke="white" stroke-width="1" fill="none"></rect>
+                        
+                        <!-- Gráfico de crescimento -->
+                        <polyline points="30,130 60,125 90,115 120,105 150,90 180,85" stroke="#34D399" stroke-width="2" fill="none"></polyline>
+                        <circle cx="180" cy="85" r="4" fill="#34D399"></circle>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Negócios &amp; E-commerce</h3>
+                <p class="text-gray-300">
+                    Receba ideias para produtos de e-commerce, escreva descrições que vendem e crie planos de negócio completos com a ajuda da IA.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- AI Power Up Section (NOVA) -->
+    <section id="ai-power-up" class="container mx-auto px-6 py-20">
+        <h2 class="text-4xl font-bold text-center mb-16">Seu Poder de IA Aprimorado!</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-gray-800 rounded-xl p-8 flex flex-col items-start">
+                <div class="w-full h-48 bg-gray-700 rounded-lg mb-4 flex items-center justify-center">
+                    <!-- SVG: Celular com Gemini e prompt de artigo de blog -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" class="w-full h-full">
+                        <rect width="300" height="200" fill="#374151" rx="5"></rect>
+                        
+                        <!-- Smartphone -->
+                        <rect x="100" y="20" width="100" height="160" rx="10" fill="#1F2937" stroke="#4B5563" stroke-width="2"></rect>
+                        <rect x="110" y="35" width="80" height="130" rx="3" fill="#111827"></rect>
+                        <circle cx="150" cy="175" r="8" fill="#4B5563"></circle>
+                        
+                        <!-- Gemini Interface -->
+                        <rect x="115" y="40" width="70" height="15" rx="3" fill="#3B82F6"></rect>
+                        <text x="150" y="51" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Gemini</text>
+                        
+                        <!-- Prompt de blog -->
+                        <rect x="115" y="60" width="70" height="40" rx="3" fill="#4B5563"></rect>
+                        <text x="120" y="70" font-family="Arial" font-size="6" fill="#E5E7EB">Escreva um artigo</text>
+                        <text x="120" y="80" font-family="Arial" font-size="6" fill="#E5E7EB">sobre IA para</text>
+                        <text x="120" y="90" font-family="Arial" font-size="6" fill="#E5E7EB">desenvolvedores</text>
+                        
+                        <!-- Resposta da IA -->
+                        <rect x="115" y="105" width="70" height="55" rx="3" fill="#1E40AF" opacity="0.3"></rect>
+                        <line x1="120" y1="115" x2="180" y2="115" stroke="#60A5FA" stroke-width="1"></line>
+                        <line x1="120" y1="125" x2="170" y2="125" stroke="#60A5FA" stroke-width="1"></line>
+                        <line x1="120" y1="135" x2="175" y2="135" stroke="#60A5FA" stroke-width="1"></line>
+                        <line x1="120" y1="145" x2="165" y2="145" stroke="#60A5FA" stroke-width="1"></line>
+                        <line x1="120" y1="155" x2="180" y2="155" stroke="#60A5FA" stroke-width="1"></line>
+                        
+                        <!-- Elementos flutuantes -->
+                        <circle cx="70" cy="60" r="15" fill="#3B82F6" opacity="0.5"></circle>
+                        <circle cx="230" cy="60" r="15" fill="#3B82F6" opacity="0.5"></circle>
+                        <circle cx="70" cy="140" r="15" fill="#3B82F6" opacity="0.5"></circle>
+                        <circle cx="230" cy="140" r="15" fill="#3B82F6" opacity="0.5"></circle>
+                        
+                        <path d="M70,60 Q150,20 230,60" stroke="#60A5FA" stroke-width="1" fill="none" stroke-dasharray="4"></path>
+                        <path d="M70,140 Q150,180 230,140" stroke="#60A5FA" stroke-width="1" fill="none" stroke-dasharray="4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-white">Tutoriais em Vídeo Avançados</h3>
+                <p class="text-gray-300">Aprenda os métodos e técnicas avançadas para usar a IA como um profissional e economize horas em tarefas complexas.</p>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-8 flex flex-col items-start">
+                <div class="w-full h-48 bg-gray-700 rounded-lg mb-4 flex items-center justify-center">
+                    <!-- SVG: Tela com prompt de calendário de conteúdo para redes sociais -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" class="w-full h-full">
+                        <rect width="300" height="200" fill="#374151" rx="5"></rect>
+                        
+                        <!-- Tela de computador -->
+                        <rect x="40" y="20" width="220" height="160" rx="5" fill="#1F2937" stroke="#4B5563" stroke-width="2"></rect>
+                        <rect x="50" y="30" width="200" height="130" rx="3" fill="#111827"></rect>
+                        <rect x="120" y="180" width="60" height="10" rx="3" fill="#4B5563"></rect>
+                        
+                        <!-- Interface de calendário -->
+                        <rect x="60" y="40" width="180" height="20" rx="3" fill="#3B82F6"></rect>
+                        <text x="150" y="55" font-family="Arial" font-size="10" fill="white" text-anchor="middle">Calendário de Conteúdo</text>
+                        
+                        <!-- Grade do calendário -->
+                        <rect x="60" y="70" width="180" height="80" rx="3" fill="#1E293B"></rect>
+                        
+                        <!-- Dias da semana -->
+                        <rect x="65" y="75" width="20" height="10" rx="2" fill="#4B5563"></rect>
+                        <rect x="90" y="75" width="20" height="10" rx="2" fill="#4B5563"></rect>
+                        <rect x="115" y="75" width="20" height="10" rx="2" fill="#4B5563"></rect>
+                        <rect x="140" y="75" width="20" height="10" rx="2" fill="#4B5563"></rect>
+                        <rect x="165" y="75" width="20" height="10" rx="2" fill="#4B5563"></rect>
+                        <rect x="190" y="75" width="20" height="10" rx="2" fill="#4B5563"></rect>
+                        <rect x="215" y="75" width="20" height="10" rx="2" fill="#4B5563"></rect>
+                        
+                        <!-- Posts agendados -->
+                        <rect x="65" y="90" width="20" height="15" rx="2" fill="#3B82F6" opacity="0.7"></rect>
+                        <rect x="115" y="90" width="20" height="15" rx="2" fill="#EC4899" opacity="0.7"></rect>
+                        <rect x="165" y="90" width="20" height="15" rx="2" fill="#8B5CF6" opacity="0.7"></rect>
+                        <rect x="215" y="90" width="20" height="15" rx="2" fill="#10B981" opacity="0.7"></rect>
+                        
+                        <rect x="90" y="110" width="20" height="15" rx="2" fill="#F59E0B" opacity="0.7"></rect>
+                        <rect x="140" y="110" width="20" height="15" rx="2" fill="#3B82F6" opacity="0.7"></rect>
+                        <rect x="190" y="110" width="20" height="15" rx="2" fill="#EC4899" opacity="0.7"></rect>
+                        
+                        <rect x="65" y="130" width="20" height="15" rx="2" fill="#8B5CF6" opacity="0.7"></rect>
+                        <rect x="115" y="130" width="20" height="15" rx="2" fill="#10B981" opacity="0.7"></rect>
+                        <rect x="165" y="130" width="20" height="15" rx="2" fill="#F59E0B" opacity="0.7"></rect>
+                        
+                        <!-- Prompt -->
+                        <rect x="60" y="160" width="180" height="20" rx="3" fill="#4B5563"></rect>
+                        <text x="150" y="174" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Gerar calendário de conteúdo para Instagram</text>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-white">Prompts de Copiar e Colar</h3>
+                <p class="text-gray-300">Mais de 99 prompts de alta performance para te ajudar a obter as melhores respostas do ChatGPT, Gemini e outras IAs.</p>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-8 flex flex-col items-start">
+                <div class="w-full h-48 bg-gray-700 rounded-lg mb-4 flex items-center justify-center">
+                    <!-- SVG: Tela com fluxograma de automação de e-mail marketing -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" class="w-full h-full">
+                        <rect width="300" height="200" fill="#374151" rx="5"></rect>
+                        
+                        <!-- Fluxograma de automação -->
+                        <rect x="40" y="20" width="220" height="160" rx="5" fill="#1F2937"></rect>
+                        
+                        <!-- Título -->
+                        <rect x="60" y="30" width="180" height="20" rx="3" fill="#3B82F6"></rect>
+                        <text x="150" y="44" font-family="Arial" font-size="10" fill="white" text-anchor="middle">Automação de E-mail Marketing</text>
+                        
+                        <!-- Nós do fluxograma -->
+                        <rect x="120" y="60" width="60" height="30" rx="5" fill="#60A5FA"></rect>
+                        <text x="150" y="78" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Início</text>
+                        
+                        <line x1="150" y1="90" x2="150" y2="105" stroke="#60A5FA" stroke-width="2"></line>
+                        <polygon points="145,105 150,115 155,105" fill="#60A5FA"></polygon>
+                        
+                        <rect x="90" y="115" width="120" height="30" rx="5" fill="#8B5CF6"></rect>
+                        <text x="150" y="133" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Enviar E-mail de Boas-vindas</text>
+                        
+                        <line x1="150" y1="145" x2="150" y2="160" stroke="#8B5CF6" stroke-width="2"></line>
+                        <polygon points="145,160 150,170 155,160" fill="#8B5CF6"></polygon>
+                        
+                        <!-- Bifurcação -->
+                        <rect x="70" y="170" width="60" height="20" rx="5" fill="#10B981"></rect>
+                        <text x="100" y="184" font-family="Arial" font-size="7" fill="white" text-anchor="middle">Abriu E-mail</text>
+                        
+                        <rect x="170" y="170" width="60" height="20" rx="5" fill="#F59E0B"></rect>
+                        <text x="200" y="184" font-family="Arial" font-size="7" fill="white" text-anchor="middle">Não Abriu</text>
+                        
+                        <line x1="150" y1="170" x2="100" y2="170" stroke="#8B5CF6" stroke-width="2"></line>
+                        <line x1="150" y1="170" x2="200" y2="170" stroke="#8B5CF6" stroke-width="2"></line>
+                        
+                        <!-- Ícones de e-mail -->
+                        <rect x="50" y="70" width="30" height="20" rx="3" fill="#4B5563"></rect>
+                        <path d="M50,70 L65,85 L80,70" stroke="#60A5FA" stroke-width="1" fill="none"></path>
+                        
+                        <rect x="220" y="70" width="30" height="20" rx="3" fill="#4B5563"></rect>
+                        <path d="M220,70 L235,85 L250,70" stroke="#60A5FA" stroke-width="1" fill="none"></path>
+                        
+                        <rect x="50" y="130" width="30" height="20" rx="3" fill="#4B5563"></rect>
+                        <path d="M50,130 L65,145 L80,130" stroke="#60A5FA" stroke-width="1" fill="none"></path>
+                        
+                        <rect x="220" y="130" width="30" height="20" rx="3" fill="#4B5563"></rect>
+                        <path d="M220,130 L235,145 L250,130" stroke="#60A5FA" stroke-width="1" fill="none"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-white">Templates de Automação</h3>
+                <p class="text-gray-300">Comece com automações poderosas usando nossos templates para e-mail, redes sociais e muito mais no Make.com.</p>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-8 flex flex-col items-start">
+                <div class="w-full h-48 bg-gray-700 rounded-lg mb-4 flex items-center justify-center">
+                    <!-- SVG: Tela escura simulando acesso a um GPT customizado -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" class="w-full h-full">
+                        <rect width="300" height="200" fill="#111827" rx="5"></rect>
+                        
+                        <!-- Interface de chat de IA -->
+                        <rect x="40" y="20" width="220" height="160" rx="5" fill="#1F2937"></rect>
+                        
+                        <!-- Cabeçalho -->
+                        <rect x="40" y="20" width="220" height="30" rx="5" fill="#2563EB"></rect>
+                        <text x="150" y="40" font-family="Arial" font-size="12" fill="white" text-anchor="middle">GPT Customizado</text>
+                        
+                        <!-- Mensagens -->
+                        <rect x="50" y="60" width="150" height="20" rx="10" fill="#4B5563"></rect>
+                        <text x="60" y="74" font-family="Arial" font-size="8" fill="white">Crie uma imagem de um robô futurista</text>
+                        
+                        <rect x="100" y="90" width="150" height="60" rx="10" fill="#1E40AF"></rect>
+                        <text x="110" y="105" font-family="Arial" font-size="8" fill="white">Gerando imagem...</text>
+                        
+                        <!-- Imagem simulada -->
+                        <rect x="110" y="115" width="130" height="25" rx="3" fill="#374151"></rect>
+                        <circle cx="125" cy="127" r="5" fill="#60A5FA"></circle>
+                        <rect x="135" y="122" width="95" height="10" rx="2" fill="#60A5FA" opacity="0.3"></rect>
+                        
+                        <!-- Elementos de interface -->
+                        <rect x="50" y="160" width="180" height="10" rx="5" fill="#4B5563"></rect>
+                        <circle cx="240" cy="165" r="8" fill="#3B82F6"></circle>
+                        <text x="240" y="168" font-family="Arial" font-size="10" fill="white" text-anchor="middle">→</text>
+                        
+                        <!-- Elementos decorativos -->
+                        <circle cx="60" cy="35" r="5" fill="#EC4899" opacity="0.7"></circle>
+                        <circle cx="75" cy="35" r="5" fill="#F59E0B" opacity="0.7"></circle>
+                        <circle cx="90" cy="35" r="5" fill="#10B981" opacity="0.7"></circle>
+                        
+                        <!-- Partículas de IA -->
+                        <circle cx="270" cy="50" r="4" fill="#60A5FA" opacity="0.7"></circle>
+                        <circle cx="260" cy="65" r="3" fill="#60A5FA" opacity="0.5"></circle>
+                        <circle cx="275" cy="80" r="5" fill="#60A5FA" opacity="0.6"></circle>
+                        <circle cx="265" cy="95" r="2" fill="#60A5FA" opacity="0.4"></circle>
+                        <circle cx="275" cy="110" r="4" fill="#60A5FA" opacity="0.7"></circle>
+                        <circle cx="260" cy="125" r="3" fill="#60A5FA" opacity="0.5"></circle>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-white">Acesso a IAs Customizadas</h3>
+                <p class="text-gray-300">Acesse nossas IAs personalizadas para criação de imagens, conteúdo de redes sociais e muito mais.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section id="pricing" class="container mx-auto px-6 py-20">
+        <div class="max-w-4xl mx-auto bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-blue-500/50">
+            <div class="grid md:grid-cols-2 items-center">
+                <div class="p-8 md:p-12">
+                    <h2 class="text-3xl font-bold mb-4">Arsenal Dev AI</h2>
+                    <div class="flex items-baseline gap-4 mb-4">
+                        <span class="text-5xl font-bold text-white">R$50</span>
+                        <span class="text-2xl text-gray-400 line-through">R$89</span>
+                    </div>
+                    <p class="font-semibold text-yellow-400 mb-6">PAGAMENTO ÚNICO PARA ACESSO VITALÍCIO</p>
+                    <button class="w-full bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-medium text-lg btn" onclick="showRedirectModal()">
+                        Garantir Acesso Vitalício
+                    </button>
+                    <p class="text-center text-xs text-gray-400 mt-4">Atualizações constantes | Garantia de 7 dias</p>
+                </div>
+                <div class="hidden md:flex h-full items-center justify-center p-8 bg-gray-800">
+                    <!-- SVG: Mockup do Produto -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" class="w-full h-full">
+                        <rect width="300" height="200" fill="#1F2937" rx="10"></rect>
+                        
+                        <!-- Laptop -->
+                        <path d="M75,40 L225,40 C230,40 235,45 235,50 L235,150 L65,150 L65,50 C65,45 70,40 75,40 Z" fill="#111827" stroke="#4B5563" stroke-width="2"></path>
+                        <rect x="75" y="50" width="150" height="90" fill="#1E293B"></rect>
+                        <path d="M50,150 L250,150 L260,170 L40,170 Z" fill="#374151" stroke="#4B5563" stroke-width="1"></path>
+                        <rect x="140" y="160" width="20" height="5" rx="2" fill="#4B5563"></rect>
+                        
+                        <!-- Tela do Arsenal -->
+                        <rect x="85" y="60" width="130" height="15" rx="2" fill="#3B82F6"></rect>
+                        <text x="150" y="71" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Arsenal Dev AI</text>
+                        
+                        <!-- Cards de prompts -->
+                        <rect x="85" y="85" width="40" height="45" rx="3" fill="#2563EB" opacity="0.7"></rect>
+                        <rect x="90" y="90" width="30" height="5" rx="1" fill="white" opacity="0.7"></rect>
+                        <rect x="90" y="100" width="25" height="3" rx="1" fill="white" opacity="0.5"></rect>
+                        <rect x="90" y="105" width="30" height="3" rx="1" fill="white" opacity="0.5"></rect>
+                        <rect x="90" y="110" width="20" height="3" rx="1" fill="white" opacity="0.5"></rect>
+                        <rect x="90" y="120" width="30" height="5" rx="1" fill="#10B981"></rect>
+                        
+                        <rect x="135" y="85" width="40" height="45" rx="3" fill="#8B5CF6" opacity="0.7"></rect>
+                        <rect x="140" y="90" width="30" height="5" rx="1" fill="white" opacity="0.7"></rect>
+                        <rect x="140" y="100" width="25" height="3" rx="1" fill="white" opacity="0.5"></rect>
+                        <rect x="140" y="105" width="30" height="3" rx="1" fill="white" opacity="0.5"></rect>
+                        <rect x="140" y="110" width="20" height="3" rx="1" fill="white" opacity="0.5"></rect>
+                        <rect x="140" y="120" width="30" height="5" rx="1" fill="#10B981"></rect>
+                        
+                        <rect x="185" y="85" width="20" height="45" rx="3" fill="#EC4899" opacity="0.7"></rect>
+                        
+                        <!-- Smartphone ao lado -->
+                        <rect x="260" y="80" width="30" height="60" rx="5" fill="#111827" stroke="#4B5563" stroke-width="1"></rect>
+                        <rect x="265" y="85" width="20" height="40" rx="2" fill="#1E293B"></rect>
+                        <rect x="270" y="130" width="10" height="5" rx="2" fill="#4B5563"></rect>
+                        
+                        <!-- Elementos decorativos -->
+                        <circle cx="30" cy="70" r="15" fill="#3B82F6" opacity="0.2"></circle>
+                        <circle cx="40" cy="100" r="20" fill="#8B5CF6" opacity="0.2"></circle>
+                        <circle cx="25" cy="130" r="10" fill="#EC4899" opacity="0.2"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section - Arsenal -->
+    <section id="faq-arsenal" class="container mx-auto px-6 py-20">
+        <h2 class="text-4xl font-bold text-center mb-16">Perguntas Frequentes - Arsenal Dev AI</h2>
+        <div class="max-w-3xl mx-auto space-y-6">
+            <div class="bg-gray-800 rounded-xl p-6 faq-item cursor-pointer" onclick="toggleFAQ(this)">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium">A compra do Arsenal é um pagamento único ou uma assinatura?</h3>
+                    <svg class="faq-icon w-5 h-5 transform transition-transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer mt-4 text-gray-300 open">
+                    É um pagamento único. Você compra uma vez e tem acesso vitalício a todos os prompts e futuras atualizações do Arsenal Dev AI, sem nenhuma taxa de assinatura recorrente.
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-6 faq-item cursor-pointer" onclick="toggleFAQ(this)">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium">Preciso de um plano pago do ChatGPT ou outra IA para usar os prompts?</h3>
+                    <svg class="faq-icon w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer mt-4 text-gray-300">
+                    Não. A grande maioria dos nossos prompts é otimizada para funcionar perfeitamente com os modelos mais potentes e populares do mercado, incluindo as versões gratuitas e pagas de plataformas como <strong>GPT-4o (OpenAI), Gemini 1.5 Pro (Google), Claude 3 (Anthropic), Llama 3 (Meta) e os modelos da Mistral AI</strong>.
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-6 faq-item cursor-pointer" onclick="toggleFAQ(this)">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium">Como recebo o acesso após a compra?</h3>
+                    <svg class="faq-icon w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer mt-4 text-gray-300">
+                    Imediatamente após a confirmação do pagamento, você receberá um e-mail com um link exclusivo para criar sua conta e acessar a plataforma do Arsenal Dev AI.
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-6 faq-item cursor-pointer" onclick="toggleFAQ(this)">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium">Que tipo de prompts vou encontrar no Arsenal?</h3>
+                    <svg class="faq-icon w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer mt-4 text-gray-300">
+                    O Arsenal contém centenas de prompts testados para marketing, criação de conteúdo, SEO, e-commerce, desenvolvimento de negócios e muito mais. É uma caixa de ferramentas completa para profissionais digitais.
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl p-6 faq-item cursor-pointer" onclick="toggleFAQ(this)">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium">Preciso ser um expert em IA para usar os prompts?</h3>
+                    <svg class="faq-icon w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer mt-4 text-gray-300">
+                    De forma alguma. O Arsenal foi criado para todos os níveis. Os prompts são projetados para serem 'copiados e colados'. Se você sabe usar um navegador, pode usar o Arsenal para obter resultados incríveis.
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl p-6 faq-item cursor-pointer" onclick="toggleFAQ(this)">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium">Qual a diferença do Arsenal para outros pacotes de prompts?</h3>
+                    <svg class="faq-icon w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer mt-4 text-gray-300">
+                    Nós focamos em qualidade e estratégia, não apenas em quantidade. Além de prompts prontos, o Arsenal ensina os *métodos* por trás deles e é constantemente atualizado com novas estratégias, tudo isso com acesso vitalício.
+                </div>
+            </div>
+            
+            <div class="bg-gray-800 rounded-xl p-6 faq-item cursor-pointer" onclick="toggleFAQ(this)">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium">Como funciona o processo de compra?</h3>
+                    <svg class="faq-icon w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer mt-4 text-gray-300">
+                    Ao clicar em "Garantir Acesso Vitalício", você será redirecionado para nossa página segura de pagamento na Hotmart, uma das maiores plataformas de produtos digitais do Brasil. Lá você poderá escolher a forma de pagamento e finalizar sua compra com total segurança.
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="container mx-auto px-6 py-20 text-center">
+        <h2 class="text-4xl font-bold mb-6">Pronto para Transformar seu Processo de Desenvolvimento?</h2>
+        <p class="text-gray-300 text-xl max-w-3xl mx-auto mb-10">
+            Junte-se a milhares de desenvolvedores que já estão aproveitando o poder da IA para escrever código melhor e mais rápido.
+        </p>
+        <div class="flex justify-center">
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-medium text-lg btn" onclick="showRedirectModal()">
+                Garantir Acesso Vitalício
+            </button>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="text-xl font-bold mb-2">Brazilian Dev AI</div>
+                    <p class="text-gray-400">Capacitando criadores e inovadores com o poder da IA</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <div class="text-gray-400 text-sm">
+                    © 2025 Brazilian Dev AI. Todos os direitos reservados.
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal de Redirecionamento -->
+    <div id="redirectModal" class="modal fixed inset-0 flex items-center justify-center">
+        <div class="modal-content max-w-md w-full mx-4 p-6">
+            <div class="text-center mb-6">
+                <svg class="h-16 w-16 mx-auto text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <h3 class="text-xl font-bold mb-2">Você será redirecionado para a página de pagamento</h3>
+                <p class="text-gray-300 mb-6">
+                    Para sua segurança, o pagamento é processado pela Hotmart, uma plataforma líder em vendas de produtos digitais no Brasil.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium btn" onclick="redirectToPayment()">
+                        Continuar para pagamento
+                    </button>
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium btn" onclick="closeModal()">
+                        Voltar
+                    </button>
+                </div>
+                <p class="text-xs text-gray-400 mt-4">
+                    <svg class="h-4 w-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    Conexão segura | Pagamento protegido
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.querySelector('.faq-answer');
+            const icon = element.querySelector('.faq-icon');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-answer').forEach(item => {
+                if (item !== answer) {
+                    item.classList.remove('open');
+                }
+            });
+            
+            document.querySelectorAll('.faq-icon').forEach(item => {
+                if (item !== icon) {
+                    item.classList.remove('rotate-180');
+                }
+            });
+            
+            // Toggle current FAQ
+            answer.classList.toggle('open');
+            icon.classList.toggle('rotate-180');
+        }
+        
+        // Open the first FAQ by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstFAQ = document.querySelector('.faq-item');
+            if (firstFAQ) {
+                toggleFAQ(firstFAQ);
+            }
+        });
+        
+        // Modal functions
+        function showRedirectModal() {
+            document.getElementById('redirectModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            document.getElementById('redirectModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function redirectToPayment() {
+            // Aqui você colocaria o link da Hotmart
+            window.location.href = "https://pay.hotmart.com/seu-produto";
+        }
+        
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('redirectModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95adc72b542cbdb3',t:'MTc1MTc5MTAyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+<div class="ue-sidebar-container"><iframe srcdoc="<!DOCTYPE html><html><head></head><body><div class=&quot;frame-root&quot;></div></body></html>"></iframe></div></body></html>

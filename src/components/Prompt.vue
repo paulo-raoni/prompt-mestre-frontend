@@ -1,6 +1,22 @@
 <template>
   <section class="section pt-6">
     <button class="button is-link mb-4" @click="voltar">&larr; Voltar</button>
+
+    <!-- Área de informações do prompt -->
+    <div class="box card-prompt-info">
+      <div style="font-size:2rem;" class="mb-2">{{ prompt.emoji }}</div>
+      <h2 class="title is-4 mb-2">{{ prompt.title }}</h2>
+      <div v-if="prompt.short_description" class="mb-3 is-size-6" v-html="formatText(prompt.short_description)"></div>
+      <div v-if="prompt.long_description" class="mb-4 is-size-6" v-html="formatText(prompt.long_description)"></div>
+      <div v-if="prompt.benefits && prompt.benefits.length">
+        <div class="is-size-6 mb-2" style="font-weight:600;">Destaques:</div>
+        <ul class="pl-4" style="text-align:left;">
+          <li v-for="(item, i) in prompt.benefits" :key="i" v-html="formatText(item)" class="mb-2"></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Só essa box é copiável! -->
     <div class="box card-prompt" style="position:relative;">
       <div class="copy-btn-sticky">
         <button class="copy-btn" @click="copiarPrompt">
@@ -13,17 +29,8 @@
         </button>
         <span v-if="copiado" class="copiado-msg"><span class="copiado-check">✅</span> Copiado!</span>
       </div>
-
-      <div style="font-size:2rem;" class="mb-2">{{ prompt.emoji }}</div>
-      <h2 class="title is-4 mb-2">{{ prompt.title }}</h2>
-      <div v-if="prompt.short_description" class="mb-3 is-size-6" v-html="formatText(prompt.short_description)"></div>
-      <div v-if="prompt.long_description" class="mb-4 is-size-6" v-html="formatText(prompt.long_description)"></div>
-      <div v-if="prompt.benefits && prompt.benefits.length">
-        <div class="is-size-6 mb-2" style="font-weight:600;">Destaques:</div>
-        <ul class="pl-4" style="text-align:left;">
-          <li v-for="(item, i) in prompt.benefits" :key="i" v-html="formatText(item)" class="mb-2"></li>
-        </ul>
-      </div>
+      <!-- Aqui fica só o prompt "puro" a ser copiado -->
+      <pre class="prompt-puro">{{ prompt.prompt }}</pre>
     </div>
   </section>
 </template>
@@ -62,10 +69,8 @@ function formatText(text) {
 
 
 const copiado = ref(false);
-
 function copiarPrompt() {
-  // Escolha o texto principal do prompt (exemplo: long_description ou o que quiser copiar)
-  const texto = prompt.value.long_description || prompt.value.short_description || prompt.value.title || "";
+  const texto = prompt.value.prompt || ""; // <-- Só o prompt puro!
   if (texto) {
     navigator.clipboard.writeText(texto);
     copiado.value = true;
