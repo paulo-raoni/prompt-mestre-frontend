@@ -14,8 +14,16 @@
     <div class="menu-grid">
       <div v-if="categoria && categoria.prompts" v-for="prompt in categoria.prompts" :key="prompt.slug"
         class="box card-custom" style="cursor:pointer" @click="irParaPrompt(prompt)">
-        <strong>{{ prompt.title }}</strong>
-        <div>{{ prompt.short_description }}</div>
+        <!-- Emoji e título do prompt -->
+        <strong>
+          <span v-if="prompt.emoji" style="margin-right:6px">{{ prompt.emoji }}</span>
+          {{ prompt.title }}
+        </strong>
+        <!-- Short description, ou início do long_description se short estiver vazio -->
+        <div v-if="prompt.short_description || prompt.long_description" class="has-text-grey mt-1"
+          style="font-size:0.97em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; max-height:3em; text-overflow:ellipsis;">
+          {{ prompt.short_description || prompt.long_description }}
+        </div>
       </div>
     </div>
   </section>
@@ -49,5 +57,12 @@ function irParaPrompt(prompt) {
 
 function voltar() {
   router.push({ name: 'Menu' })
+}
+
+// Função utilitária para preview do teaser
+function teaserPreview(teaser) {
+  if (!teaser) return '';
+  const firstLine = teaser.split('\n')[0];
+  return firstLine.length > 120 ? firstLine.slice(0, 120) + '...' : firstLine;
 }
 </script>
