@@ -9,35 +9,21 @@
           <span class="pm-header-emoji">{{ prompt.emoji }}</span>
           <h1 class="pm-header-title">{{ prompt.title }}</h1>
         </div>
-        <div class="pm-desc-block">
-          <div v-if="prompt.short_description" class="desc-faq-ui">
-            <button class="desc-faq-title" @click="showShort = !showShort" :aria-expanded="showShort">
-              <span class="desc-faq-label">Resumo</span>
-              <span class="faq-arrow" :class="{ open: showShort }">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2.2" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-            </button>
-            <transition name="faq-slide">
-              <div v-show="showShort" class="pm-header-lead" v-html="formatText(prompt.short_description)" />
-            </transition>
-          </div>
-          <div v-if="prompt.long_description" class="desc-faq-ui">
-            <button class="desc-faq-title" @click="showLong = !showLong" :aria-expanded="showLong">
-              <span class="desc-faq-label">Detalhes</span>
-              <span class="faq-arrow" :class="{ open: showLong }">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2.2" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-            </button>
-            <transition name="faq-slide">
-              <div v-show="showLong" class="pm-header-desc" v-html="formatText(prompt.long_description)" />
-            </transition>
-          </div>
+        <div v-if="prompt.long_description" class="desc-faq-ui desc-faq-accent">
+          <button class="desc-faq-title" @click="showLong = !showLong" :aria-expanded="showLong">
+            <span class="desc-faq-label">
+              {{ prompt.short_description || 'Detalhes' }}
+            </span>
+            <span class="faq-arrow" :class="{ open: showLong }">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2.2" fill="none"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </button>
+          <transition name="faq-slide">
+            <div v-show="showLong" class="pm-header-desc" v-html="formatText(prompt.long_description)" />
+          </transition>
         </div>
       </div>
     </div>
@@ -48,30 +34,31 @@
 
     <!-- PROMPT PREMIUM -->
     <div class="prompt-command-card">
+      <!-- Botão sticky sempre visível e fora do pre/code -->
+      <button class="copy-btn-sticky" @click="copiarPrompt" aria-label="Copiar">
+        <svg width="19" height="19" fill="none" style="vertical-align: middle; margin-right: 5px;">
+          <rect x="5" y="4" width="10" height="11" rx="2" stroke="#d3d7e1" stroke-width="1.6" />
+          <rect x="9" y="2.6" width="7" height="11.5" rx="2" stroke="#d3d7e1" stroke-width="1" fill="none" />
+        </svg>
+        <span v-if="!copiado">Copiar</span>
+        <span v-else>
+          <svg class="copiado-check" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            style="vertical-align:-3px;margin-right:2px;">
+            <path d="M5 13l4 4L19 7" stroke="#7bf594" stroke-width="2.2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Copiado!
+        </span>
+      </button>
       <div class="prompt-command-header">
         <span class="prompt-command-title">Prompt de Comando</span>
-        <div class="prompt-copy-wrap">
-          <button class="copy-button" @click="copiarPrompt">
-            <svg width="19" height="19" fill="none" style="vertical-align: middle;margin-right:5px;">
-              <rect x="5" y="4" width="10" height="11" rx="2" stroke="#d3d7e1" stroke-width="1.6" />
-              <rect x="9" y="2.6" width="7" height="11.5" rx="2" stroke="#d3d7e1" stroke-width="1" fill="none" />
-            </svg>
-            Copiar
-          </button>
-          <span v-if="copiado" class="copiado-msg">
-            <svg class="copiado-check" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              style="vertical-align:-3px;margin-right:5px;">
-              <path d="M5 13l4 4L19 7" stroke="#7bf594" stroke-width="2.2" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-            Copiado!
-          </span>
-        </div>
       </div>
       <div class="prompt-command-body">
         <pre class="prompt-command-pre"><code>{{ prompt.prompt }}</code></pre>
       </div>
     </div>
+
+
 
     <!-- BLOCOS EXTRAS ORDENADOS -->
     <BlockExtra v-if="prompt.teaser" emoji="💡" label="Cenários de Uso & Exemplos"
@@ -97,9 +84,7 @@ const route = useRoute();
 const router = useRouter();
 const store = useCategorias();
 const { categorias } = storeToRefs(store);
-const showShort = ref(false);
 const showLong = ref(false);
-
 
 const prompt = computed(() => {
   const categorySlug = route.params.categorySlug;
@@ -153,10 +138,9 @@ function formatTeaser(teaser) {
 }
 
 
-
 const copiado = ref(false);
 function copiarPrompt() {
-  const texto = prompt.value.prompt || ""; // <-- Só o prompt puro!
+  const texto = prompt.value.prompt || "";
   if (texto) {
     navigator.clipboard.writeText(texto);
     copiado.value = true;
@@ -168,9 +152,9 @@ function copiarPrompt() {
 <style scoped>
 /* HEADER MODERNO */
 .pm-header-container {
-  max-width: 1100px;
+  max-width: 68rem;
   margin: 0 auto 1.5rem auto;
-  padding: 0 1.3rem;
+  padding: 0;
 }
 
 .pm-header {
@@ -201,77 +185,9 @@ function copiarPrompt() {
   margin-bottom: 0;
 }
 
-.pm-desc-block {
-  max-width: 68rem;
-  /* Igual ao BlockExtra */
-  width: 100%;
-  margin: 0 auto 2.1rem auto;
-  /* Mesmo margin-bottom */
-  padding: 0;
-  /* Tirar padding da wrapper */
-  border-radius: 0.7em;
-  /* Igual ao BlockExtra, se quiser */
-  background: none;
-  /* Mantém transparente aqui */
-}
-
-
-.pm-header-lead,
-.pm-header-desc {
-  position: relative;
-  z-index: 2;
-  background: none;
-  border-radius: 0;
-  padding: 0;
-  margin: 0;
-  max-width: 100%;
-}
-
-
-.pm-header-lead {
-  font-size: 1.12rem;
-  color: #a9dcf8;
-  font-style: italic;
-  font-weight: 400;
-  line-height: 1.51;
-  margin-bottom: 0.15em;
-}
-
-
-.pm-header-desc {
-  font-size: 1.13rem;
-  color: #e7e8ec;
-  font-weight: 400;
-  line-height: 1.61;
-}
-
-.pm-desc-block-accent {
-  position: relative;
-  background: rgba(28, 30, 40, 0.62);
-  /* vidro leve, ou transparente */
-  border-radius: 0.8em;
-  backdrop-filter: blur(9px) saturate(1.1);
-  -webkit-backdrop-filter: blur(9px) saturate(1.1);
-  padding: 1.6em 2.1em 1.2em 1.2em;
-  margin-bottom: 2.1rem;
-}
-
-.pm-desc-block-accent::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 0.36em;
-  border-radius: 8px 0 0 8px;
-  background: linear-gradient(180deg, #3B82F6 60%, #31d0a7 100%);
-  opacity: 0.38;
-  z-index: 1;
-}
-
-
-
+/* FAQ/Accordion Header Block */
 .desc-faq-ui {
+  max-width: 68rem;
   margin-bottom: 1.12rem;
   background: rgba(28, 30, 40, 0.62);
   border-radius: 0.8em;
@@ -280,6 +196,26 @@ function copiarPrompt() {
   box-shadow: none;
   padding: 0;
   overflow: hidden;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.desc-faq-accent {
+  position: relative;
+}
+
+.desc-faq-accent::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.33em;
+  border-radius: 8px 0 0 8px;
+  background: linear-gradient(180deg, #3B82F6 65%, #31d0a7 100%);
+  opacity: 0.44;
+  z-index: 1;
 }
 
 .desc-faq-title {
@@ -293,12 +229,14 @@ function copiarPrompt() {
   background: none;
   border: none;
   width: 100%;
-  padding: 1.1em 1.3em 1.1em 1.3em;
+  padding: 1.1em 1.4em 1.1em 1.4em;
   cursor: pointer;
   outline: none;
   user-select: none;
-  border-radius: 0.8em;
-  transition: background 0.14s;
+  border-radius: 0.8em 0.8em 0 0;
+  position: relative;
+  z-index: 2;
+  transition: background 0.13s;
 }
 
 .desc-faq-title:hover {
@@ -306,11 +244,50 @@ function copiarPrompt() {
 }
 
 .desc-faq-label {
-  font-size: 1.07em;
+  font-size: 1.06em;
   font-weight: bold;
-  margin-right: 3px;
+  margin-right: 6px;
 }
 
+.faq-arrow {
+  display: flex;
+  align-items: center;
+  margin-left: 6px;
+  transition: transform .3s cubic-bezier(.72, .1, .18, .93);
+  color: #b3b8cc;
+}
+
+.faq-arrow.open {
+  transform: rotate(180deg);
+}
+
+.pm-header-desc {
+  font-size: 1.13rem;
+  color: #e7e8ec;
+  font-weight: 400;
+  line-height: 1.61;
+  padding: 1.12em 1.4em 1.35em 1.4em;
+  transition: background 0.18s;
+}
+
+.faq-slide-enter-active,
+.faq-slide-leave-active {
+  transition: all 0.27s cubic-bezier(.69, .07, .27, .96);
+}
+
+.faq-slide-enter-from,
+.faq-slide-leave-to {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px) scaleY(0.98);
+}
+
+.faq-slide-enter-to,
+.faq-slide-leave-from {
+  max-height: 400px;
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+}
 
 
 
@@ -405,15 +382,62 @@ function copiarPrompt() {
 
 /* Prompt box com label/tabs */
 .prompt-command-card {
-  background: #22262d;
+  position: relative;
+  max-width: 820px;
+  margin: 2.3rem auto;
   border-radius: 1.2em;
   border: 1.5px solid #2e3440;
-  margin: 2.3rem 0;
   box-shadow: 0 4px 24px 0 rgba(40, 50, 80, 0.11);
-  overflow: hidden;
-  max-width: 820px;
-  margin-left: auto;
-  margin-right: auto;
+  background: #22262d;
+  overflow: visible;
+}
+
+/* Botão flutuante sticky (absoluto, canto superior direito) */
+.code-block-wrap {
+  position: relative;
+  border-radius: 0.8em;
+  overflow: auto;
+  background: none;
+  max-height: 75vh;
+}
+
+/* Botão sticky à direita do bloco, SEM scroll interno! */
+.copy-btn-sticky {
+  position: sticky;
+  top: 26px;
+  right: 18px;
+  float: right;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: #e8f3fb;
+  background: var(--accent, #3b82f6);
+  border: none;
+  border-radius: 0.8em;
+  padding: 0.5em 1.2em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.13s, box-shadow 0.18s;
+  box-shadow: 0 2px 10px #0017;
+  margin-top: 1.3em;
+  margin-right: 1.3em;
+}
+
+.copy-btn-sticky:hover {
+  background: var(--accent-hover, #2563eb);
+  color: #fff;
+}
+
+.copiado-check {
+  font-size: 1.14em;
+  margin-right: 2px;
+  animation: popIn 0.22s cubic-bezier(.59, 1.63, .36, .97);
+}
+
+.copy-btn-sticky.visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .prompt-command-header {
@@ -491,7 +515,7 @@ function copiarPrompt() {
 
 .prompt-command-pre {
   font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', monospace !important;
-  font-size: 1.05rem;
+  font-size: 1.07rem;
   color: #e7eaf0;
   line-height: 1.7;
   margin: 0;
@@ -500,6 +524,7 @@ function copiarPrompt() {
   white-space: pre-wrap;
   word-break: break-word;
   tab-size: 4;
+  padding: 0;
 }
 
 
@@ -550,17 +575,28 @@ function copiarPrompt() {
     font-size: 2rem;
   }
 
-  .pm-header-lead {
-    font-size: 1.09rem;
-  }
-
-  .pm-header-desc {
-    font-size: 0.97rem;
-  }
-
   .pm-header-container {
     max-width: 100vw;
     padding: 0 10px;
+  }
+
+  .desc-faq-ui {
+    max-width: 99vw;
+  }
+
+  .prompt-command-card {
+    max-width: 99vw;
+  }
+
+  .copy-btn-sticky {
+    position: static;
+    float: none;
+    width: 100%;
+    margin: 0.4em 0 0.6em 0;
+    justify-content: flex-end;
+    background: var(--accent-hover, #2563eb);
+    border-radius: 0.7em;
+    box-shadow: none;
   }
 }
 
@@ -573,8 +609,33 @@ function copiarPrompt() {
     font-size: 1.3rem;
   }
 
-  .pm-header-lead {
-    font-size: 1.07rem;
+  .copy-btn-sticky {
+    position: static;
+    float: none;
+    width: 100%;
+    margin: 0.4em 0 0.6em 0;
+    justify-content: flex-end;
+    background: rgba(58, 100, 170, 0.28);
+    border-radius: 0.7em;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .prompt-command-card {
+    max-width: 99vw;
+    font-size: 0.98rem;
+  }
+
+  .copy-btn-sticky {
+    position: static;
+    width: 100%;
+    justify-content: flex-end;
+    background: var(--accent-hover, #2563eb);
+    box-shadow: none;
+    margin-bottom: 0.5em;
+    border-radius: 0 0 0.7em 0.7em;
+    padding: 0.18em 0.9em 0.18em 0;
   }
 }
 </style>
